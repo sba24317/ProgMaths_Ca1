@@ -17,7 +17,5 @@ ctrl+p
 Create java project
 Choose no build tools
 
-
 ### Github project
 [https://github.com/sba24317/ProgMaths_L7DipAppSWDev_Sept24_ca1]
-
