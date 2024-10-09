@@ -54,7 +54,7 @@ public class HandlerFile {
 
             // test if is a valid string otherwise assing values
             if (names.length < 1) {
-                throw new Exception("Could not find first and second name on line");
+                throw new Exception("Could not find a line with first and second name");
             } else {
                 // check if content for first name is valid
                 if (names[0].matches("[a-zA-Z]+"))
