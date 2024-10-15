@@ -1,13 +1,17 @@
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 /*
  * this class will be resposible for operations
  */
 public class HandlerFile {
-    // object Scanner
+
+    FileWriter myFileWriter;
     Scanner oScanner;
-    
+
+    //string auxiliar
     String aux;
 
     // indicates line was read.
@@ -18,23 +22,34 @@ public class HandlerFile {
         this.linePosition = 0;
     }
 
+    public void buildWritter(String fileName){
+        File file = new File(fileName);
+        try {
+            this.myFileWriter = new FileWriter(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     /* 
     *  method to instate object scanner
     *  return true if success, false if fails 
     */
     public boolean buildScanner(String fileName) {
-        File file;
+        File myFile;
         boolean result = true;
 
         // try instaces one object Scanner
         try {
-            file = new File(fileName);
+            myFile = new File(fileName);
 
-            this.oScanner = new Scanner(file);
+            this.oScanner = new Scanner(myFile);
 
-        } catch (Exception e) {
-            System.out.println("\nError fetching file: <" + fileName + "> Error is:" + e.getMessage());
+        } catch (Exception error) {
+        
             result = false;
+            System.out.println("\nError fetching file: <" + fileName + "> Error is:" + error.getMessage());
         }
         return result;
     }
@@ -49,11 +64,11 @@ public class HandlerFile {
 
         try {
             // read from file name ans second name
-            names = this.oScanner.nextLine().split(" ");
+            names = this.oScanner.nextLine() .split(" ");
             this.linePosition++;
 
             // test if is a valid string otherwise assing values
-            if (names.length < 1) {
+            if (names.length < 2) {
                 throw new Exception("Could not find a line with first and second name");
             } else {
                 // check if content for first name is valid
@@ -115,4 +130,24 @@ public class HandlerFile {
         }
         return myCustomer;
     }
+
+    public boolean doWriteOnFile(String fileName, String lineData) {
+        boolean result = true;
+        try {
+            this.myFileWriter.append(lineData);
+            this.myFileWriter.append("\n");
+            this.myFileWriter.flush();
+        } catch (IOException e) {
+            result = false;
+            System.err.println("An error occurs while writing on file:" + fileName);    
+            e.printStackTrace();
+        }
+        
+
+
+        return result;
+    }
+
+
+
 }
