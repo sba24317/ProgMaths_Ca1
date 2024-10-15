@@ -8,50 +8,50 @@ import java.util.Scanner;
  */
 public class HandlerFile {
 
-    FileWriter myFileWriter;
-    Scanner oScanner;
-
+    // object that write on file
+    public FileWriter oFileWritter;
+    
+    // object that read from file
+    public Scanner oFileReader;
+    
     //string auxiliar
-    String aux;
+    public String aux;
+    
+    // file In
+    File fileIn;
+    
+    // Object file out
+    File fileOut;
 
     // indicates line was read.
-    int linePosition;
+    private int linePosition;
 
-    // classe constructor
-    HandlerFile() {
-        this.linePosition = 0;
-    }
-
-    public void buildWritter(String fileName){
-        File file = new File(fileName);
+     HandlerFile(String fileName) {       
         try {
-            this.myFileWriter = new FileWriter(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+            // create a new File
+            fileIn = new File(fileName);
 
+            // create a Scanner object
+            oFileReader = new Scanner(fileIn);
 
-    /* 
-    *  method to instate object scanner
-    *  return true if success, false if fails 
-    */
-    public boolean buildScanner(String fileName) {
-        File myFile;
-        boolean result = true;
+            // create a fileout name
+            fileOut = new File(fileIn.getParent() + "\\customerdiscount.txt"  );
 
-        // try instaces one object Scanner
-        try {
-            myFile = new File(fileName);
+            // delete old file out if It exists.
+            fileOut.delete();
 
-            this.oScanner = new Scanner(myFile);
+            // create a new file.
+            fileOut.createNewFile();
+
+            /// create a new writter.
+            this.oFileWritter = new FileWriter(fileOut);
 
         } catch (Exception error) {
         
-            result = false;
-            System.out.println("\nError fetching file: <" + fileName + "> Error is:" + error.getMessage());
+            System.out.println("\nError setting the file handles, for file : <" + fileName + "> \nError is:" + error.getMessage());
+            return;
         }
-        return result;
+        
     }
 
     /*
@@ -64,7 +64,7 @@ public class HandlerFile {
 
         try {
             // read from file name ans second name
-            names = this.oScanner.nextLine() .split(" ");
+            names = this.oFileReader.nextLine() .split(" ");
             this.linePosition++;
 
             // test if is a valid string otherwise assing values
@@ -85,7 +85,7 @@ public class HandlerFile {
             }
 
             // read file again to fetch value
-            aux = this.oScanner.nextLine();
+            aux = this.oFileReader.nextLine();
             linePosition++;
 
             // check if content for initial value is valid
@@ -95,7 +95,7 @@ public class HandlerFile {
                 throw new Exception("Value for inicital value should be numeric");
 
             // read file again to fetch value for classe
-            aux = oScanner.nextLine();
+            aux = oFileReader.nextLine();
             linePosition++;
 
             // check if content for classe value is valid
@@ -105,7 +105,7 @@ public class HandlerFile {
                 throw new Exception("Value for classe should be 1/2/3");
 
             // read file again to fetch value for last purchase
-            aux = this.oScanner.nextLine();
+            aux = this.oFileReader.nextLine();
             linePosition++;
 
             // check if content for last purchase is valid
@@ -121,8 +121,8 @@ public class HandlerFile {
 
             // push the pointer in file to next line that represents a customer
             for (int i = (linePosition % 4); i < 4; i++) {
-                if (oScanner.hasNext()) {
-                    oScanner.nextLine();
+                if (oFileReader.hasNext()) {
+                    oFileReader.nextLine();
                     linePosition++;
                 }
             }
@@ -131,23 +131,25 @@ public class HandlerFile {
         return myCustomer;
     }
 
-    public boolean doWriteOnFile(String fileName, String lineData) {
+    /*
+     * Write data on file result
+     * 
+    */
+    public boolean doWriteOnFile(Customer customer) {
         boolean result = true;
         try {
-            this.myFileWriter.append(lineData);
-            this.myFileWriter.append("\n");
-            this.myFileWriter.flush();
+            // append data on file
+            this.oFileWritter.append(customer.getFirstName() + " " + customer.getSecondName() + "\n");
+
+            // append data on file
+            this.oFileWritter.append(customer.getFinalValue() + "\n");            
+            // flush data in file
+            this.oFileWritter.flush();
         } catch (IOException e) {
             result = false;
-            System.err.println("An error occurs while writing on file:" + fileName);    
+            System.err.println("An error occurs while writing on file: " + fileOut.getAbsolutePath());    
             e.printStackTrace();
         }
-        
-
-
         return result;
     }
-
-
-
 }
