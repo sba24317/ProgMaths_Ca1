@@ -50,9 +50,9 @@ public class HandlerFile {
             fileErrorLog = fileIn.getParent() + "\\customer_Errors-"+ fileErrorLog + ".log";
 
             fileErrorsOut = new File(fileErrorLog);
-
             fileErrorsOut.createNewFile();
 
+            /// create a new writter for errors
             this.oFileErrorWritter = new FileWriter(fileErrorsOut);
 
         } catch (Exception error) {

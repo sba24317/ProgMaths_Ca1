@@ -3,6 +3,8 @@ public class Ca1 {
 
     public static void main(String[] args) {
         System.out.println("");
+        
+        // set counters for fail and success
         int quantSucces = 0;
         int quantFails = 0;
 
