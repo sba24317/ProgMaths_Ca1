@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 /*
@@ -10,54 +11,60 @@ public class HandlerFile {
 
     // object that write on file
     public FileWriter oFileWritter;
-    
+    // object that write on file
+    public FileWriter oFileErrorWritter;
     // object that read from file
     public Scanner oFileReader;
-    
     //string auxiliar
     public String aux;
-    
     // file In
-    File fileIn;
-    
+    private File fileIn;
     // Object file out
-    File fileOut;
-
+    private File fileOut;
+    // Object file Errors out
+    private File fileErrorsOut;
     // indicates line was read.
     private int linePosition;
+    // path for error file
+    private String fileErrorLog;
 
      HandlerFile(String fileName) {       
         try {
+            final LocalDateTime date = LocalDateTime.now();
+
             // create a new File
             fileIn = new File(fileName);
-
             // create a Scanner object
             oFileReader = new Scanner(fileIn);
-
             // create a fileout name
             fileOut = new File(fileIn.getParent() + "\\customerdiscount.txt"  );
-
             // delete old file out if It exists.
             fileOut.delete();
-
             // create a new file.
             fileOut.createNewFile();
-
             /// create a new writter.
             this.oFileWritter = new FileWriter(fileOut);
 
+            // instace a file error log
+            fileErrorLog = date.toString().substring(0,19).replace(":", "_").replace(".", "_");
+            fileErrorLog = fileIn.getParent() + "\\customer_Errors-"+ fileErrorLog + ".log";
+
+            fileErrorsOut = new File(fileErrorLog);
+
+            fileErrorsOut.createNewFile();
+
+            this.oFileErrorWritter = new FileWriter(fileErrorsOut);
+
         } catch (Exception error) {
-        
             System.out.println("\nError setting the file handles, for file : <" + fileName + "> \nError is:" + error.getMessage());
             return;
         }
-        
     }
 
     /*
      * this method will intereact with file and returns a Customer object
      */
-    public Customer GetCustomerFromFile() {
+    public Customer getCustomerFromFile() {
         String aux;
         String[] names;
         Customer myCustomer = new Customer();
@@ -116,8 +123,11 @@ public class HandlerFile {
 
         } catch (Exception e) {
             // print error to console
-            System.out.println("----------------------------");
-            System.out.println("An error occur while fetchin customers, Error reading line: " + linePosition + " Error: " + e.getMessage());
+            String errMsg = "----------------------------\n" 
+            + "An error occur while fetchin customers, Error reading line: " 
+            + linePosition + " Error: " + e.getMessage();
+
+            this.doWriteOnErrorLog(errMsg);
 
             // push the pointer in file to next line that represents a customer
             for (int i = (linePosition % 4); i < 4; i++) {
@@ -152,4 +162,21 @@ public class HandlerFile {
         }
         return result;
     }
+
+    public boolean doWriteOnErrorLog(String errMsg) {
+        boolean result = true; 
+        try {
+            this.oFileErrorWritter.append(errMsg + "\n");
+            this.oFileErrorWritter.flush();
+        } catch (IOException e) {
+            System.out.println("Error occurs while attemp write on error file.");
+            result = false;
+        }
+        return result;
+    }
+
+    public String getFileErrorLog(){
+        return this.fileErrorLog;
+    }
+
 }
