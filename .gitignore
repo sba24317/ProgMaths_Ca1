@@ -1,4 +1,3 @@
 .vscode/*
 *Errors*
-src/customerdiscount.txt
-src/customers.txt
+src/*.txt

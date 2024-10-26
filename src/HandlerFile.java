@@ -123,11 +123,9 @@ public class HandlerFile {
 
         } catch (Exception e) {
             // print error to console
-            String errMsg = "----------------------------\n" 
-            + "An error occur while fetchin customers, Error reading line: " 
-            + linePosition + " Error: " + e.getMessage();
+            String errMsg = "- Error reading line: " + linePosition + " Error: " + e.getMessage();
 
-            this.doWriteOnErrorLog(errMsg);
+            this.doWriteOnErrorLog(errMsg + "\n");
 
             // push the pointer in file to next line that represents a customer
             for (int i = (linePosition % 4); i < 4; i++) {
