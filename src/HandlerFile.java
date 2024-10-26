@@ -5,7 +5,8 @@ import java.time.LocalDateTime;
 import java.util.Scanner;
 
 /*
- * this class will be resposible for operations
+ * this class will be in charge for operations tiwh files
+ * Author: sba24317
  */
 public class HandlerFile {
 

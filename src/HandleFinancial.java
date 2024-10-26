@@ -5,7 +5,10 @@ import java.time.LocalDate;
 */
 public class HandleFinancial {
     /*
-     * receives a customer and calculates final price, base in rules bellow.
+     * calcFinalValue()
+     *  Receives a customer and calculates final price, base in rules bellow.
+     *  Author: sba24317
+     * 
      * Classe = 1 and Last Purchase in 2024 Value Purchased - 30%
      * Classe = 1 and Last Purchase less than 2024 Value Purchased - 20%
      * Classe = 1 and no Purchase in the last 5 years Value Purchased - 10%

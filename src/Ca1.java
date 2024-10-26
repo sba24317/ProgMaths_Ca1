@@ -1,4 +1,9 @@
-
+/*
+ *  This is a main class for CA1, Programaths 2024
+ *  Student Valter Freire de Carvalho, sba24317
+ * 
+ *  Github repository: https://github.com/sba24317/ProgMaths_Ca1.git
+ */
 public class Ca1 {
 
     public static void main(String[] args) {
@@ -8,7 +13,7 @@ public class Ca1 {
         int quantSucces = 0;
         int quantFails = 0;
 
-        // set here inputfile
+        // set here inputfile, it must be absolute path or same path you compiled files
         String fileName = (args.length > 0) ? args[0] : "C:/Users/valter/Documents/CCT/Java/002_CA1/src/customers.txt";
         
         // object Customer
@@ -51,7 +56,7 @@ public class Ca1 {
         System.out.println("Fails: " + quantFails);
         
         if( quantFails > 0) {
-            System.out.println("All errors were written on this file: " + oHandleFile.getFileErrorLog());
+            System.out.println("\nAll errors were written on this file: " + oHandleFile.getFileErrorLog());
         }
     }
 }
